@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIM — Security Incident Mapping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1217;
+    --panel: #161C24;
+    --panel-2: #1D2530;
+    --line: #2A3340;
+    --text: #E7EBF0;
+    --muted: #8B96A5;
+    --amber: #F0A202;
+    --amber-dim: #7A5713;
+    --red: #E14B4B;
+    --red-dim: #5C2323;
+    --green: #4CAF7D;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+  }
+  .display{font-family:'Barlow Condensed', sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  /* ---- Header ---- */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky; top:0;
+    background:rgba(14,18,23,0.92);
+    backdrop-filter: blur(6px);
+    z-index:20;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{
+    width:34px; height:34px;
+    background:var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    color:#1A1300;
+    font-weight:700;
+    font-family:'Barlow Condensed', sans-serif;
+    font-size:18px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .brand h1{font-size:22px; font-weight:600; letter-spacing:0.03em;}
+  .brand span{color:var(--muted); font-size:12px; letter-spacing:0.08em; font-family:'Inter'; text-transform:none; display:block;}
+  .report-btn{
+    background:var(--amber);
+    color:#1A1300;
+    border:none;
+    padding:10px 18px;
+    font-family:'Barlow Condensed', sans-serif;
+    font-size:15px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    font-weight:600;
+    cursor:pointer;
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .report-btn:hover{filter:brightness(1.1); transform:translateY(-1px);}
+  .report-btn:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--amber); outline-offset:2px;
+  }
+
+  /* ---- Layout ---- */
+  .wrap{max-width:1080px; margin:0 auto; padding:28px 24px 80px;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:28px;
+  }
+  .stat{background:var(--panel); padding:16px 18px;}
+  .stat .num{font-family:'Barlow Condensed'; font-size:34px; font-weight:700; line-height:1;}
+  .stat .lbl{color:var(--muted); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; margin-top:6px;}
+  .stat.alert .num{color:var(--amber);}
+
+  .section-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px; flex-wrap:wrap; gap:10px;
+  }
+  .section-head h2{font-family:'Barlow Condensed'; font-size:20px; letter-spacing:0.04em; text-transform:uppercase;}
+  .section-head .note{color:var(--muted); font-size:12px;}
+
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .filters button{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:7px 14px;
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .filters button.active{background:var(--amber); color:#1A1300; border-color:var(--amber);}
+
+  /* ---- Incident feed ---- */
+  .feed{display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); background:var(--line);}
+  .incident{
+    background:var(--panel);
+    padding:16px 18px;
+    display:grid;
+    grid-template-columns:4px 1fr auto;
+    gap:16px;
+    align-items:start;
+  }
+  .sev-bar{width:4px; align-self:stretch; border-radius:2px;}
+  .sev-high .sev-bar{background:var(--red);}
+  .sev-med .sev-bar{background:var(--amber);}
+  .sev-low .sev-bar{background:var(--green);}
+
+  .inc-main .top-row{display:flex; gap:10px; align-items:center; margin-bottom:6px; flex-wrap:wrap;}
+  .tag{
+    font-family:'JetBrains Mono'; font-size:10.5px;
+    padding:2px 7px; border-radius:2px;
+    text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .sev-high .tag.sev{background:var(--red-dim); color:#FFC4C4;}
+  .sev-med .tag.sev{background:var(--amber-dim); color:#FFE1A8;}
+  .sev-low .tag.sev{background:#173D2C; color:#B7EBCF;}
+  .tag.type{background:var(--panel-2); color:var(--muted);}
+  .inc-main h3{font-size:15px; font-weight:600; margin-bottom:4px;}
+  .inc-main p{color:#B9C2CD; font-size:13.5px; line-height:1.5;}
+  .inc-meta{
+    text-align:right; color:var(--muted); font-size:11.5px; font-family:'JetBrains Mono';
+    white-space:nowrap;
+  }
+  .inc-meta .loc{color:var(--text); font-family:'Inter'; font-size:12.5px; margin-bottom:3px;}
+  .empty{padding:40px 18px; text-align:center; color:var(--muted); background:var(--panel);}
+
+  /* ---- Modal ---- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(6,8,11,0.72);
+    display:none; align-items:center; justify-content:center;
+    padding:20px; z-index:30;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:var(--panel); border:1px solid var(--line);
+    width:100%; max-width:480px;
+    max-height:88vh; overflow-y:auto;
+    padding:24px;
+  }
+  .modal h2{font-family:'Barlow Condensed'; font-size:22px; letter-spacing:0.03em; margin-bottom:4px;}
+  .modal .sub{color:var(--muted); font-size:12.5px; margin-bottom:18px;}
+  label{display:block; font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); margin:14px 0 6px;}
+  label:first-of-type{margin-top:0;}
+  select, input, textarea{
+    width:100%; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--text); padding:10px 12px; font-family:'Inter'; font-size:14px;
+  }
+  textarea{resize:vertical; min-height:80px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .modal-actions{display:flex; gap:10px; margin-top:20px;}
+  .btn-secondary{
+    flex:1; background:transparent; border:1px solid var(--line); color:var(--muted);
+    padding:11px; font-family:'Barlow Condensed'; text-transform:uppercase; letter-spacing:0.05em;
+    font-size:14px; font-weight:600; cursor:pointer;
+  }
+  .btn-primary{
+    flex:2; background:var(--amber); border:none; color:#1A1300;
+    padding:11px; font-family:'Barlow Condensed'; text-transform:uppercase; letter-spacing:0.05em;
+    font-size:14px; font-weight:700; cursor:pointer;
+  }
+  .anon-toggle{display:flex; align-items:center; gap:8px; margin-top:14px;}
+  .anon-toggle input{width:auto;}
+  .anon-toggle label{margin:0; text-transform:none; font-size:13px; color:var(--text); letter-spacing:0;}
+
+  .disclaimer{
+    margin-top:24px; padding:14px 16px; background:var(--panel);
+    border:1px solid var(--line); border-left:3px solid var(--amber);
+    font-size:12.5px; color:var(--muted); line-height:1.6;
+  }
+
+  footer{text-align:center; padding:24px; color:var(--muted); font-size:11.5px; border-top:1px solid var(--line);}
+
+  @media (max-width:640px){
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .incident{grid-template-columns:4px 1fr;}
+    .inc-meta{text-align:left; margin-top:8px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">S</div>
+    <div>
+      <h1>SIM</h1>
+      <span>Security Incident Mapping — Campus Reporting</span>
+    </div>
+  </div>
+  <button class="report-btn" id="openReport">+ Report Incident</button>
+</header>
+
+<div class="wrap">
+
+  <div class="stat-row" id="statRow"></div>
+
+  <div class="section-head">
+    <h2>Incident Log</h2>
+    <span class="note" id="feedNote">Live campus reports, most recent first</span>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="feed" id="feed"></div>
+
+  <div class="disclaimer">
+    <strong style="color:var(--text)">If you are in immediate danger, do not rely on this platform.</strong>
+    Call campus security or the police first. SIM is for reporting and mapping incidents to help the
+    community and administration identify patterns — it is not an emergency dispatch service.
+  </div>
+</div>
+
+<footer>SIM &mdash; SEN202 Weekend Dev Project &nbsp;|&nbsp; Reports in this demo are stored in-memory only and reset on refresh.</footer>
+
+<!-- Report Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2>Report a Security Incident</h2>
+    <div class="sub">Your report helps map crime patterns on campus. You may report anonymously.</div>
+
+    <form id="reportForm">
+      <label for="type">Incident type</label>
+      <select id="type" required>
+        <option value="">Select type</option>
+        <option>Theft / Stealing</option>
+        <option>Stabbing / Assault</option>
+        <option>Rape / Sexual Assault</option>
+        <option>Murder</option>
+        <option>Burglary</option>
+        <option>Harassment</option>
+        <option>Suspicious Activity</option>
+        <option>Other</option>
+      </select>
+
+      <div class="row2">
+        <div>
+          <label for="severity">Severity</label>
+          <select id="severity" required>
+            <option value="high">High</option>
+            <option value="med" selected>Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+        <div>
+          <label for="role">Reporting as</label>
+          <select id="role" required>
+            <option>Student</option>
+            <option>Staff</option>
+            <option>Landlord</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="location">Location on / around campus</label>
+      <input id="location" type="text" placeholder="e.g. Hostel Block C, back gate" required>
+
+      <label for="description">What happened?</label>
+      <textarea id="description" placeholder="Brief, factual description of the incident" required></textarea>
+
+      <div class="anon-toggle">
+        <input type="checkbox" id="anon" checked>
+        <label for="anon">Report anonymously</label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="cancelReport">Cancel</button>
+        <button type="submit" class="btn-primary">Submit Report</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ---- Seed data (in-memory, resets on refresh — no persistence per demo constraints) ----
+  let incidents = [
+    { type:"Theft / Stealing", severity:"med", role:"Student", location:"Hostel Block C, Room 14 corridor", description:"Laptop reported missing from an unlocked room during evening prep.", anon:true, time:Date.now()-1000*60*40 },
+    { type:"Suspicious Activity", severity:"low", role:"Landlord", location:"Off-campus lodge, Back Gate axis", description:"Unfamiliar persons loitering near student lodges after 11pm for three nights running.", anon:false, time:Date.now()-1000*60*60*5 },
+    { type:"Stabbing / Assault", severity:"high", role:"Student", location:"Footpath behind Faculty of Science", description:"Physical altercation between two individuals resulted in a stab wound; victim taken to clinic.", anon:true, time:Date.now()-1000*60*60*22 },
+    { type:"Harassment", severity:"med", role:"Staff", location:"Admin block car park", description:"Repeated verbal harassment of a staff member by an unidentified individual.", anon:true, time:Date.now()-1000*60*60*30 },
+  ];
+
+  const typeFilters = ["All","Theft / Stealing","Stabbing / Assault","Rape / Sexual Assault","Murder","Burglary","Harassment","Suspicious Activity","Other"];
+  let activeFilter = "All";
+
+  const feed = document.getElementById('feed');
+  const filtersEl = document.getElementById('filters');
+  const statRow = document.getElementById('statRow');
+  const feedNote = document.getElementById('feedNote');
+
+  function timeAgo(ts){
+    const mins = Math.round((Date.now()-ts)/60000);
+    if(mins < 60) return mins + "m ago";
+    const hrs = Math.round(mins/60);
+    if(hrs < 24) return hrs + "h ago";
+    return Math.round(hrs/24) + "d ago";
+  }
+
+  function renderFilters(){
+    filtersEl.innerHTML = "";
+    typeFilters.forEach(f=>{
+      const b = document.createElement('button');
+      b.textContent = f;
+      if(f===activeFilter) b.classList.add('active');
+      b.onclick = ()=>{ activeFilter = f; render(); };
+      filtersEl.appendChild(b);
+    });
+  }
+
+  function renderStats(){
+    const today = incidents.filter(i => Date.now()-i.time < 1000*60*60*24).length;
+    const high = incidents.filter(i => i.severity==='high').length;
+    const counts = {};
+    incidents.forEach(i => counts[i.type] = (counts[i.type]||0)+1);
+    const topType = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+
+    statRow.innerHTML = `
+      <div class="stat"><div class="num">${incidents.length}</div><div class="lbl">Total Reports</div></div>
+      <div class="stat"><div class="num">${today}</div><div class="lbl">Last 24 Hours</div></div>
+      <div class="stat alert"><div class="num">${high}</div><div class="lbl">High Severity</div></div>
+      <div class="stat"><div class="num" style="font-size:20px; padding-top:6px;">${topType ? topType[0] : '—'}</div><div class="lbl">Most Reported</div></div>
+    `;
+  }
+
+  function renderFeed(){
+    const list = activeFilter==="All" ? incidents : incidents.filter(i=>i.type===activeFilter);
+    feedNote.textContent = `${list.length} report${list.length===1?'':'s'} shown`;
+
+    if(list.length===0){
+      feed.innerHTML = `<div class="empty">No incidents reported under this category yet.</div>`;
+      return;
+    }
+
+    feed.innerHTML = list
+      .slice()
+      .sort((a,b)=>b.time-a.time)
+      .map(i=>`
+        <div class="incident sev-${i.severity}">
+          <div class="sev-bar"></div>
+          <div class="inc-main">
+            <div class="top-row">
+              <span class="tag sev">${i.severity==='high'?'High':i.severity==='med'?'Medium':'Low'}</span>
+              <span class="tag type">${i.type}</span>
+            </div>
+            <h3>${i.location}</h3>
+            <p>${i.description}</p>
+          </div>
+          <div class="inc-meta">
+            <div class="loc">${i.anon ? 'Anonymous' : i.role}</div>
+            <div>${timeAgo(i.time)}</div>
+          </div>
+        </div>
+      `).join('');
+  }
+
+  function render(){
+    renderFilters();
+    renderStats();
+    renderFeed();
+  }
+
+  // ---- Modal handling ----
+  const overlay = document.getElementById('overlay');
+  document.getElementById('openReport').onclick = ()=> overlay.classList.add('show');
+  document.getElementById('cancelReport').onclick = ()=> overlay.classList.remove('show');
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.classList.remove('show'); });
+
+  document.getElementById('reportForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    incidents.push({
+      type: document.getElementById('type').value,
+      severity: document.getElementById('severity').value,
+      role: document.getElementById('role').value,
+      location: document.getElementById('location').value,
+      description: document.getElementById('description').value,
+      anon: document.getElementById('anon').checked,
+      time: Date.now()
+    });
+    this.reset();
+    document.getElementById('anon').checked = true;
+    overlay.classList.remove('show');
+    activeFilter = "All";
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

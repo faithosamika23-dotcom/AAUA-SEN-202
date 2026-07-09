@@ -1,0 +1,117 @@
+<mxfile host="app.diagrams.net" modified="2026-07-04T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram name="Ishikawa - Campus Insecurity" id="sim-ishikawa-1">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Ishikawa (Fishbone) Diagram — Root Causes of Campus Insecurity" style="text;html=1;align=center;fontSize=18;fontStyle=1;fontColor=#1A1A1A;" vertex="1" parent="1">
+          <mxGeometry x="200" y="10" width="800" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Spine -->
+        <mxCell id="spine" style="endArrow=block;html=1;strokeWidth=3;strokeColor=#1A1A1A;" edge="1" parent="1" source="spineStart" target="effect">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="spineStart" style="ellipse;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="130" y="415" width="1" height="1" as="geometry" />
+        </mxCell>
+
+        <!-- Effect box -->
+        <mxCell id="effect" value="Rising Insecurity / Crime on Campus" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B36B00;strokeColor=#7A4A00;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="380" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ================= TOP BRANCHES ================= -->
+
+        <!-- People -->
+        <mxCell id="catPeopleBox" value="People" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="920" y="60" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="peopleCauses" value="- Cultism / peer pressure&#10;- Non-students / intruders on campus&#10;- Poor attitude to reporting crime" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="900" y="105" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchPeople" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="990" y="100" as="sourcePoint" />
+            <mxPoint x="1080" y="415" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Environment -->
+        <mxCell id="catEnvBox" value="Environment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="660" y="60" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="envCauses" value="- Poor street/hostel lighting&#10;- Unfenced or poorly secured perimeter&#10;- Bushes and isolated footpaths" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="640" y="105" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchEnv" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="100" as="sourcePoint" />
+            <mxPoint x="850" y="415" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Economic Factors -->
+        <mxCell id="catEcoBox" value="Economic Factors" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="60" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ecoCauses" value="- Poverty and youth unemployment&#10;- High cost of tuition / living expenses&#10;- Economic hardship in host community" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="380" y="105" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchEco" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="100" as="sourcePoint" />
+            <mxPoint x="620" y="415" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= BOTTOM BRANCHES ================= -->
+
+        <!-- Policy & Enforcement -->
+        <mxCell id="catPolicyBox" value="Policy &amp; Enforcement" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="920" y="700" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="policyCauses" value="- No formal channel to report incidents quickly&#10;- Slow security response time&#10;- Weak enforcement of campus access rules" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="900" y="625" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchPolicy" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1000" y="700" as="sourcePoint" />
+            <mxPoint x="1080" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Infrastructure & Technology -->
+        <mxCell id="catInfraBox" value="Infrastructure &amp; Technology" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="650" y="700" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="infraCauses" value="- Little to no CCTV coverage&#10;- No visitor / ID verification at entry points&#10;- No alarm or panic-button system" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="630" y="625" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchInfra" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="735" y="700" as="sourcePoint" />
+            <mxPoint x="850" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Community & Housing -->
+        <mxCell id="catCommBox" value="Community &amp; Housing" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#161C24;strokeColor=#F0A202;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="700" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="commCauses" value="- Landlords renting without security checks&#10;- Poor town-gown (campus/community) relations&#10;- Off-campus lodges left unmonitored" style="text;html=1;align=left;verticalAlign=top;fontSize=11;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="380" y="625" width="230" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="branchComm" style="endArrow=none;html=1;strokeWidth=2;strokeColor=#1A1A1A;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="700" as="sourcePoint" />
+            <mxPoint x="620" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
